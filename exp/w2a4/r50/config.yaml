@@ -26,9 +26,10 @@ model:                    # architecture details
     type: resnet50       # model name
     kwargs:
         num_classes: 1000
-    path: /mnt/lustre/weixiuying/model_zoo/resnet50_imagenet.pth.tar
+    # path: /mnt/lustre/weixiuying/model_zoo/resnet50_imagenet.pth.tar
+    path: ""
 data:
-    path: /mnt/lustre/share/ImageNet-Pytorch/
+    path: /data01/datasets/imagenet
     batch_size: 64
     num_workers: 4
     pin_memory: True

@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch
+import torchvision as tv
 from .resnet import BasicBlock, Bottleneck, resnet18, resnet50  # noqa: F401
 from .regnet import ResBottleneckBlock, regnetx_600m, regnetx_3200m  # noqa: F401
 from .mobilenetv2 import InvertedResidual, mobilenetv2  # noqa: F401
@@ -165,8 +166,12 @@ specials = {
 def load_model(config):
     config['kwargs'] = config.get('kwargs', dict())
     model = eval(config['type'])(**config['kwargs'])
-    checkpoint = torch.load(config.path, map_location='cpu')
-    if config.type == 'mobilenetv2':
-        checkpoint = checkpoint['model']
-    model.load_state_dict(checkpoint)
+    if len(config.path):
+        checkpoint = torch.load(config.path, map_location='cpu')
+        if config.type == 'mobilenetv2':
+            checkpoint = checkpoint['model']
+        model.load_state_dict(checkpoint)
+    else:
+        st = tv.models.__dict__[config['type']](pretrained=True).state_dict()
+        model.load_state_dict(st)
     return model

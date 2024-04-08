@@ -10,3 +10,4 @@ exp
 old_exp
 .DS_Store
 __pycache__
+*.pt

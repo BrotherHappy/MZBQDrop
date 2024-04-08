@@ -6,15 +6,14 @@ import torch.nn as nn
 import logging
 import argparse
 import imagenet_utils
-from recon import reconstruction
+from recon import reconstruction,compute_hamming_loss
 from fold_bn import search_fold_and_remove_bn, StraightThrough
 from qdrop.model import load_model, specials
 from qdrop.quantization.state import enable_calibration_woquantization, enable_quantization, disable_all
 from qdrop.quantization.quantized_module import QuantizedLayer, QuantizedBlock
 from qdrop.quantization.fake_quant import QuantizeBase
 from qdrop.quantization.observer import ObserverBase
-logger = logging.getLogger('qdrop')
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+from loguru import logger
 
 
 def quantize_model(model, config_quant):
@@ -68,12 +67,17 @@ def get_cali_data(train_loader, num_samples):
 
 def main(config_path):
     config = imagenet_utils.parse_config(config_path)
+
+    work_dir = f"{config.model.type}-W{config.quant.a_qconfig.bit}-A{config.quant.w_qconfig.bit}-qdrop{not args.no_hamming}-{time.strftime('%Y%m%d%H%M', time.localtime())}"
+    logger.add(work_dir+"/log.txt")
+
     imagenet_utils.set_seed(config.process.seed)
     'cali data'
     train_loader, val_loader = imagenet_utils.load_data(**config.data)
     cali_data = get_cali_data(train_loader, config.quant.calibrate)
     'model'
     model = load_model(config.model)
+    # logger.info(f"Before quant acc : {imagenet_utils.validate_model(val_loader, model)}")
     search_fold_and_remove_bn(model)
     if hasattr(config, 'quant'):
         model = quantize_model(model, config.quant)
@@ -95,6 +99,9 @@ def main(config_path):
         ed = time.time()
         logger.info('the calibration time is {}'.format(ed - st))
 
+    logger.info("*"*100)
+    logger.info(f"Before_hamming_loss:{compute_hamming_loss(model,False).item()}")
+    logger.info(f"Before_hamming_loss:{compute_hamming_loss(model,True).item()}")
     if hasattr(config.quant, 'recon'):
         enable_quantization(model)
 
@@ -105,12 +112,18 @@ def main(config_path):
             for name, child_module in module.named_children():
                 if isinstance(child_module, (QuantizedLayer, QuantizedBlock)):
                     logger.info('begin reconstruction for module:\n{}'.format(str(child_module)))
-                    reconstruction(model, fp_model, child_module, getattr(fp_module, name), cali_data, config.quant.recon)
+                    reconstruction(model, fp_model, child_module, getattr(fp_module, name), cali_data, config.quant.recon,config_=config,no_hamming=args.no_hamming)
                 else:
                     recon_model(child_module, getattr(fp_module, name))
         # Start reconstruction
         recon_model(model, fp_model)
+    logger.info("*"*100)
+    logger.info(f"After_hamming_loss:{compute_hamming_loss(model,False).item()}")
+    logger.info(f"Before_hamming_loss:{compute_hamming_loss(model,True).item()}")
     enable_quantization(model)
+    logger.info(f"After quant acc : {imagenet_utils.validate_model(val_loader, model)}")
+    torch.save(model,work_dir + "/model.pt")
+    breakpoint()
     imagenet_utils.validate_model(val_loader, model)
 
 
@@ -120,5 +133,6 @@ if __name__ == '__main__':
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('--config', default='config.yaml', type=str)
+    parser.add_argument("--no_hamming",default=False,action="store_true")
     args = parser.parse_args()
     main(args.config)

@@ -3,10 +3,28 @@ import torch
 import torch.nn as nn
 import logging
 from imagenet_utils import DataSaverHook, StopForwardException
-from qdrop.quantization.quantized_module import QuantizedModule
-from qdrop.quantization.fake_quant import LSQFakeQuantize, LSQPlusFakeQuantize, QuantizeBase
+from qdrop.quantization.quantized_module import QuantizedModule,QLinear,QConv2d
+from qdrop.quantization.fake_quant import LSQFakeQuantize, LSQPlusFakeQuantize, QuantizeBase,AdaRoundFakeQuantize
 logger = logging.getLogger('qdrop')
+from hamming import HammingLoss
 
+def compute_hamming_loss(block,is_hard=False):
+    symmetric = True
+    for m in block.modules():
+        if isinstance(m,AdaRoundFakeQuantize):
+            symmetric = m.symmetric
+            break
+    hamming = HammingLoss(symmetric=symmetric)
+    hamming_loss = 0
+    total_numel = 0
+    for n,m in block.named_modules():
+        if isinstance(m, (QLinear,QConv2d)):
+            if isinstance(m.weight_fake_quant,AdaRoundFakeQuantize):
+                hamming_loss += hamming(m.weight_fake_quant.int_repr(m.weight,is_hard=is_hard),reduce="sum")
+                total_numel += m.weight.numel()
+    if total_numel == 0:
+        return 0
+    return hamming_loss / total_numel
 
 def save_inp_oup_data(model, module, cali_data: list, store_inp=False, store_oup=False, bs: int = 32, keep_gpu: bool = True):
 
@@ -78,7 +96,7 @@ class LossFunction:
                                           start_b=b_range[0], end_b=b_range[1])
         self.count = 0
 
-    def __call__(self, pred, tgt):
+    def __call__(self, pred, tgt,hamming_loss):
         """
         Compute the total loss for adaptive rounding:
         rec_loss is the quadratic output reconstruction loss, round_loss is
@@ -102,8 +120,8 @@ class LossFunction:
                     round_loss += self.weight * (1 - ((round_vals - .5).abs() * 2).pow(b)).sum()
         total_loss = rec_loss + round_loss
         if self.count % 500 == 0:
-            logger.info('Total loss:\t{:.3f} (rec:{:.3f}, round:{:.3f})\tb={:.2f}\tcount={}'.format(
-                float(total_loss), float(rec_loss), float(round_loss), b, self.count))
+            logger.info('Total loss:\t{:.3f} (rec:{:.3f}, round:{:.3f}), ham:{:.3f}\tb={:.2f}\tcount={}'.format(
+                float(total_loss), float(rec_loss), float(round_loss),float(hamming_loss), b, self.count))
         return total_loss
 
 
@@ -114,7 +132,7 @@ def lp_loss(pred, tgt, p=2.0):
     return (pred - tgt).abs().pow(p).sum(1).mean()
 
 
-def reconstruction(model, fp_model, module, fp_module, cali_data, config):
+def reconstruction(model, fp_model, module, fp_module, cali_data, config,config_,no_hamming=False):
     device = next(module.parameters()).device
     # get data first
     quant_inp, _ = save_inp_oup_data(model, module, cali_data, store_inp=True, store_oup=False, bs=config.batch_size, keep_gpu=config.keep_gpu)
@@ -143,6 +161,7 @@ def reconstruction(model, fp_model, module, fp_module, cali_data, config):
                              warm_up=config.warm_up)
 
     sz = quant_inp.size(0)
+    print(f"Before hamming_loss:{compute_hamming_loss(module).item()}")
     for i in range(config.iters):
         idx = torch.randint(0, sz, (config.batch_size,))
         if config.drop_prob < 1.0:
@@ -156,13 +175,17 @@ def reconstruction(model, fp_model, module, fp_module, cali_data, config):
             a_opt.zero_grad()
         w_opt.zero_grad()
         cur_quant_oup = module(cur_inp)
-        err = loss_func(cur_quant_oup, cur_fp_oup)
+        hamming_loss = compute_hamming_loss(module,False)
+        err = loss_func(cur_quant_oup, cur_fp_oup,hamming_loss)
+        if not no_hamming:
+            err += (hamming_loss/config_.quant.w_qconfig.bit*0.1)
         err.backward()
         w_opt.step()
         if a_opt:
             a_opt.step()
             a_scheduler.step()
     torch.cuda.empty_cache()
+    print(f"After_hamming_loss:{compute_hamming_loss(module).item()}")
     for name, layer in module.named_modules():
         if isinstance(layer, (nn.Linear, nn.Conv2d)):
             weight_quantizer = layer.weight_fake_quant

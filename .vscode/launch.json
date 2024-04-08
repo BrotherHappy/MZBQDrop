@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "R18",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "qdrop/solver/main_imagenet.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": ["--config","exp/w2a4/r18/config_w8.yaml"],
+            "env": {"CUDA_VISIBLE_DEVICES": "0"}
+        }
+    ]
+}

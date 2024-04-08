@@ -278,6 +278,26 @@ class AdaRoundFakeQuantize(QuantizeBase):
         """
         return ((self.zeta - self.gamma) * torch.sigmoid(self.alpha) + self.gamma).clamp(0, 1)
 
+    def int_repr(self,X,is_hard=False):
+        if self.ch_axis != -1:
+            new_shape = [1] * len(X.shape)
+            new_shape[self.ch_axis] = X.shape[self.ch_axis]
+            scale = self.scale.data.reshape(new_shape)
+            zero_point = self.zero_point.data.int().reshape(new_shape)
+        else:
+            scale = self.scale.item()
+            zero_point = self.zero_point.item()
+        X = torch.floor(X / scale)
+        if not hasattr(self,"alpha"):
+            self.init(X,"learned_hard_sigmoid")
+        if is_hard:
+            X += (self.alpha >= 0).float()
+        else:
+            X += self.rectified_sigmoid()
+        X += zero_point
+        # X = torch.clamp(X, self.quant_min, self.quant_max)
+        return X
+
     def adaround_forward(self, X, hard_value=False):
         if self.ch_axis != -1:
             new_shape = [1] * len(X.shape)

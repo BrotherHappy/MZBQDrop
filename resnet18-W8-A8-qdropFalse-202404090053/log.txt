@@ -1,0 +1,613 @@
+2024-04-09 00:53:53.891 | INFO     | __main__:quantize_model:55 - finish quantize model:
+ResNet(
+  (conv1): QuantizedLayer(
+    (module): QConv2d(
+      3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+    (layer_post_act_fake_quantize): LSQFakeQuantize(
+      fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+      (observer): MSEObserver()
+    )
+    (activation): ReLU(inplace=True)
+  )
+  (bn1): StraightThrough()
+  (relu): StraightThrough()
+  (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+  (layer1): Sequential(
+    (0): QuantBasicBlock(
+      (conv1_relu): QuantizedLayer(
+        (module): QConv2d(
+          64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+        (activation): ReLU(inplace=True)
+        (layer_post_act_fake_quantize): LSQFakeQuantize(
+          fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+          (observer): MSEObserver()
+        )
+      )
+      (conv2): QuantizedLayer(
+        (module): QConv2d(
+          64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (activation): ReLU(inplace=True)
+      (block_post_act_fake_quantize): LSQFakeQuantize(
+        fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+        (observer): MSEObserver()
+      )
+    )
+    (1): QuantBasicBlock(
+      (conv1_relu): QuantizedLayer(
+        (module): QConv2d(
+          64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+        (activation): ReLU(inplace=True)
+        (layer_post_act_fake_quantize): LSQFakeQuantize(
+          fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+          (observer): MSEObserver()
+        )
+      )
+      (conv2): QuantizedLayer(
+        (module): QConv2d(
+          64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (activation): ReLU(inplace=True)
+      (block_post_act_fake_quantize): LSQFakeQuantize(
+        fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (layer2): Sequential(
+    (0): QuantBasicBlock(
+      (conv1_relu): QuantizedLayer(
+        (module): QConv2d(
+          64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+        (activation): ReLU(inplace=True)
+        (layer_post_act_fake_quantize): LSQFakeQuantize(
+          fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+          (observer): MSEObserver()
+        )
+      )
+      (conv2): QuantizedLayer(
+        (module): QConv2d(
+          128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (downsample): QuantizedLayer(
+        (module): QConv2d(
+          64, 128, kernel_size=(1, 1), stride=(2, 2)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (activation): ReLU(inplace=True)
+      (block_post_act_fake_quantize): LSQFakeQuantize(
+        fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+        (observer): MSEObserver()
+      )
+    )
+    (1): QuantBasicBlock(
+      (conv1_relu): QuantizedLayer(
+        (module): QConv2d(
+          128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+        (activation): ReLU(inplace=True)
+        (layer_post_act_fake_quantize): LSQFakeQuantize(
+          fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+          (observer): MSEObserver()
+        )
+      )
+      (conv2): QuantizedLayer(
+        (module): QConv2d(
+          128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (activation): ReLU(inplace=True)
+      (block_post_act_fake_quantize): LSQFakeQuantize(
+        fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (layer3): Sequential(
+    (0): QuantBasicBlock(
+      (conv1_relu): QuantizedLayer(
+        (module): QConv2d(
+          128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+        (activation): ReLU(inplace=True)
+        (layer_post_act_fake_quantize): LSQFakeQuantize(
+          fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+          (observer): MSEObserver()
+        )
+      )
+      (conv2): QuantizedLayer(
+        (module): QConv2d(
+          256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (downsample): QuantizedLayer(
+        (module): QConv2d(
+          128, 256, kernel_size=(1, 1), stride=(2, 2)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (activation): ReLU(inplace=True)
+      (block_post_act_fake_quantize): LSQFakeQuantize(
+        fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+        (observer): MSEObserver()
+      )
+    )
+    (1): QuantBasicBlock(
+      (conv1_relu): QuantizedLayer(
+        (module): QConv2d(
+          256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+        (activation): ReLU(inplace=True)
+        (layer_post_act_fake_quantize): LSQFakeQuantize(
+          fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+          (observer): MSEObserver()
+        )
+      )
+      (conv2): QuantizedLayer(
+        (module): QConv2d(
+          256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (activation): ReLU(inplace=True)
+      (block_post_act_fake_quantize): LSQFakeQuantize(
+        fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (layer4): Sequential(
+    (0): QuantBasicBlock(
+      (conv1_relu): QuantizedLayer(
+        (module): QConv2d(
+          256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+        (activation): ReLU(inplace=True)
+        (layer_post_act_fake_quantize): LSQFakeQuantize(
+          fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+          (observer): MSEObserver()
+        )
+      )
+      (conv2): QuantizedLayer(
+        (module): QConv2d(
+          512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (downsample): QuantizedLayer(
+        (module): QConv2d(
+          256, 512, kernel_size=(1, 1), stride=(2, 2)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (activation): ReLU(inplace=True)
+      (block_post_act_fake_quantize): LSQFakeQuantize(
+        fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+        (observer): MSEObserver()
+      )
+    )
+    (1): QuantBasicBlock(
+      (conv1_relu): QuantizedLayer(
+        (module): QConv2d(
+          512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+        (activation): ReLU(inplace=True)
+        (layer_post_act_fake_quantize): LSQFakeQuantize(
+          fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+          (observer): MSEObserver()
+        )
+      )
+      (conv2): QuantizedLayer(
+        (module): QConv2d(
+          512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+          (weight_fake_quant): AdaRoundFakeQuantize(
+            fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+            (observer): MSEObserver()
+          )
+        )
+      )
+      (activation): ReLU(inplace=True)
+      (block_post_act_fake_quantize): LSQFakeQuantize(
+        fake_quant_enabled=0, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+  (fc): QuantizedLayer(
+    (module): QLinear(
+      in_features=512, out_features=1000, bias=True
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=0, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+)
+2024-04-09 00:54:33.976 | INFO     | __main__:main:100 - the calibration time is 39.816916942596436
+2024-04-09 00:54:33.989 | INFO     | __main__:main:102 - ****************************************************************************************************
+2024-04-09 00:54:34.093 | INFO     | __main__:main:103 - Before_hamming_loss:4.085608005523682
+2024-04-09 00:54:34.156 | INFO     | __main__:main:104 - Before_hamming_loss:4.086297512054443
+2024-04-09 00:54:34.168 | INFO     | __main__:recon_model:114 - begin reconstruction for module:
+QuantizedLayer(
+  (module): QConv2d(
+    3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3)
+    (weight_fake_quant): AdaRoundFakeQuantize(
+      fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+      (observer): MSEObserver()
+    )
+  )
+  (layer_post_act_fake_quantize): LSQFakeQuantize(
+    fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+    (observer): MSEObserver()
+  )
+  (activation): ReLU(inplace=True)
+)
+2024-04-09 01:09:10.916 | INFO     | __main__:recon_model:114 - begin reconstruction for module:
+QuantBasicBlock(
+  (conv1_relu): QuantizedLayer(
+    (module): QConv2d(
+      64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+    (activation): ReLU(inplace=True)
+    (layer_post_act_fake_quantize): LSQFakeQuantize(
+      fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+      (observer): MSEObserver()
+    )
+  )
+  (conv2): QuantizedLayer(
+    (module): QConv2d(
+      64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (activation): ReLU(inplace=True)
+  (block_post_act_fake_quantize): LSQFakeQuantize(
+    fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+    (observer): MSEObserver()
+  )
+)
+2024-04-09 01:19:39.079 | INFO     | __main__:recon_model:114 - begin reconstruction for module:
+QuantBasicBlock(
+  (conv1_relu): QuantizedLayer(
+    (module): QConv2d(
+      64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+    (activation): ReLU(inplace=True)
+    (layer_post_act_fake_quantize): LSQFakeQuantize(
+      fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+      (observer): MSEObserver()
+    )
+  )
+  (conv2): QuantizedLayer(
+    (module): QConv2d(
+      64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (activation): ReLU(inplace=True)
+  (block_post_act_fake_quantize): LSQFakeQuantize(
+    fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+    (observer): MSEObserver()
+  )
+)
+2024-04-09 01:28:50.041 | INFO     | __main__:recon_model:114 - begin reconstruction for module:
+QuantBasicBlock(
+  (conv1_relu): QuantizedLayer(
+    (module): QConv2d(
+      64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+    (activation): ReLU(inplace=True)
+    (layer_post_act_fake_quantize): LSQFakeQuantize(
+      fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+      (observer): MSEObserver()
+    )
+  )
+  (conv2): QuantizedLayer(
+    (module): QConv2d(
+      128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (downsample): QuantizedLayer(
+    (module): QConv2d(
+      64, 128, kernel_size=(1, 1), stride=(2, 2)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (activation): ReLU(inplace=True)
+  (block_post_act_fake_quantize): LSQFakeQuantize(
+    fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+    (observer): MSEObserver()
+  )
+)
+2024-04-09 01:38:16.122 | INFO     | __main__:recon_model:114 - begin reconstruction for module:
+QuantBasicBlock(
+  (conv1_relu): QuantizedLayer(
+    (module): QConv2d(
+      128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+    (activation): ReLU(inplace=True)
+    (layer_post_act_fake_quantize): LSQFakeQuantize(
+      fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+      (observer): MSEObserver()
+    )
+  )
+  (conv2): QuantizedLayer(
+    (module): QConv2d(
+      128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (activation): ReLU(inplace=True)
+  (block_post_act_fake_quantize): LSQFakeQuantize(
+    fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+    (observer): MSEObserver()
+  )
+)
+2024-04-09 01:47:15.899 | INFO     | __main__:recon_model:114 - begin reconstruction for module:
+QuantBasicBlock(
+  (conv1_relu): QuantizedLayer(
+    (module): QConv2d(
+      128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+    (activation): ReLU(inplace=True)
+    (layer_post_act_fake_quantize): LSQFakeQuantize(
+      fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+      (observer): MSEObserver()
+    )
+  )
+  (conv2): QuantizedLayer(
+    (module): QConv2d(
+      256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (downsample): QuantizedLayer(
+    (module): QConv2d(
+      128, 256, kernel_size=(1, 1), stride=(2, 2)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (activation): ReLU(inplace=True)
+  (block_post_act_fake_quantize): LSQFakeQuantize(
+    fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+    (observer): MSEObserver()
+  )
+)
+2024-04-09 01:58:08.297 | INFO     | __main__:recon_model:114 - begin reconstruction for module:
+QuantBasicBlock(
+  (conv1_relu): QuantizedLayer(
+    (module): QConv2d(
+      256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+    (activation): ReLU(inplace=True)
+    (layer_post_act_fake_quantize): LSQFakeQuantize(
+      fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+      (observer): MSEObserver()
+    )
+  )
+  (conv2): QuantizedLayer(
+    (module): QConv2d(
+      256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (activation): ReLU(inplace=True)
+  (block_post_act_fake_quantize): LSQFakeQuantize(
+    fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+    (observer): MSEObserver()
+  )
+)
+2024-04-09 02:08:36.028 | INFO     | __main__:recon_model:114 - begin reconstruction for module:
+QuantBasicBlock(
+  (conv1_relu): QuantizedLayer(
+    (module): QConv2d(
+      256, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+    (activation): ReLU(inplace=True)
+    (layer_post_act_fake_quantize): LSQFakeQuantize(
+      fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+      (observer): MSEObserver()
+    )
+  )
+  (conv2): QuantizedLayer(
+    (module): QConv2d(
+      512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (downsample): QuantizedLayer(
+    (module): QConv2d(
+      256, 512, kernel_size=(1, 1), stride=(2, 2)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (activation): ReLU(inplace=True)
+  (block_post_act_fake_quantize): LSQFakeQuantize(
+    fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+    (observer): MSEObserver()
+  )
+)
+2024-04-09 02:20:40.955 | INFO     | __main__:recon_model:114 - begin reconstruction for module:
+QuantBasicBlock(
+  (conv1_relu): QuantizedLayer(
+    (module): QConv2d(
+      512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+    (activation): ReLU(inplace=True)
+    (layer_post_act_fake_quantize): LSQFakeQuantize(
+      fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+      (observer): MSEObserver()
+    )
+  )
+  (conv2): QuantizedLayer(
+    (module): QConv2d(
+      512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1)
+      (weight_fake_quant): AdaRoundFakeQuantize(
+        fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+        (observer): MSEObserver()
+      )
+    )
+  )
+  (activation): ReLU(inplace=True)
+  (block_post_act_fake_quantize): LSQFakeQuantize(
+    fake_quant_enabled=1, observer_enabled=0, symmetric=False, bit=8, ch_axis=-1, quant_min=0, quant_max=255
+    (observer): MSEObserver()
+  )
+)
+2024-04-09 02:31:26.539 | INFO     | __main__:recon_model:114 - begin reconstruction for module:
+QuantizedLayer(
+  (module): QLinear(
+    in_features=512, out_features=1000, bias=True
+    (weight_fake_quant): AdaRoundFakeQuantize(
+      fake_quant_enabled=1, observer_enabled=0, symmetric=True, bit=8, ch_axis=0, quant_min=-128, quant_max=127
+      (observer): MSEObserver()
+    )
+  )
+)
+2024-04-09 02:36:45.370 | INFO     | __main__:main:120 - ****************************************************************************************************
+2024-04-09 02:36:45.436 | INFO     | __main__:main:121 - After_hamming_loss:4.0635085105896
+2024-04-09 02:36:45.471 | INFO     | __main__:main:122 - Before_hamming_loss:4.063515663146973
+2024-04-09 02:43:58.355 | INFO     | __main__:main:124 - After quant acc : 69.72999572753906
